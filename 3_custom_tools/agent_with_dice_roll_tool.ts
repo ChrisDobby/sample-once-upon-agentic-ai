@@ -3,6 +3,8 @@ import { toJsonSchema } from '@langchain/core/utils/json_schema'
 import { model } from '../shared/model.ts'
 import { runAndPrint } from '../shared/print.ts'
 // TODO: Step 1 - Import tool from langchain and z from zod
+import { tool } from 'langchain'
+import { z } from 'zod'
 
 function rollDice(faces: number = 6): number {
   if (faces < 1) {
@@ -16,6 +18,13 @@ function rollDice(faces: number = 6): number {
 //   - name: 'roll_dice'
 //   - schema: z.object({ faces: z.number().int().default(6) })
 // TODO: Step 2 - Give the tool a description, and describe the faces parameter with .describe()
+const rollDiceTool = tool(({ faces }) => rollDice(faces), {
+  name: 'roll_dice',
+  description: 'Roll one die with a given number of faces and return the result.',
+  schema: z.object({
+    faces: z.number().int().default(6).describe('Number of faces on the die, 1 or more. Defaults to 6.'),
+  }),
+})
 
 // what LangChain tells the model about your tool
 console.log({ name: rollDiceTool.name, description: rollDiceTool.description, schema: toJsonSchema(rollDiceTool.schema) })
@@ -23,6 +32,7 @@ console.log({ name: rollDiceTool.name, description: rollDiceTool.description, sc
 const diceMaster = createAgent({
   model,
   // TODO: Step 3 - Add the tool to the agent
+  tools: [rollDiceTool],
   systemPrompt: `You are Lady Luck, the mystical keeper of dice and fortune in D&D adventures.
     You speak with theatrical flair and always announce dice rolls with appropriate drama.
     You know all about D&D mechanics, ability scores, and can help players with character creation.

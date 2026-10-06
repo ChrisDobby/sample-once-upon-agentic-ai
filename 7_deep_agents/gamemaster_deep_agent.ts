@@ -11,6 +11,7 @@ import { printMessages } from '../shared/print.ts'
 import { characterAgent } from '../5_subagents/agents/character_agent/character_agent.ts'
 import { rulesAgent } from '../5_subagents/agents/rules_agent/rules_agent.ts'
 // TODO: Step 1 - Import createDeepAgent from deepagents
+import { createDeepAgent } from 'deepagents'
 
 const app = express()
 app.use(cors())
@@ -55,13 +56,23 @@ const checkpointer = SqliteSaver.fromConnString('.agent/sessions.sqlite')
 const agent = createDeepAgent({
   model,
   // TODO: Step 1 - Pass the INSTRUCTIONS as the systemPrompt
+  systemPrompt: INSTRUCTIONS,
   // TODO: Step 2 - Add the dice MCP tools (await mcpClient.getTools())
+  tools: await mcpClient.getTools(),
   // TODO: Step 3 - Add the Chapter 5 rulesAgent and characterAgent as subagents: { name, description, runnable } for each
+  subagents: [rulesAgent, characterAgent].map((subagent) => ({
+    name: subagent.options.name!,
+    description: subagent.options.description!,
+    runnable: subagent,
+  })),
   // TODO: Step 4 - Keep the session on disk: pass the checkpointer (the session name is the thread id, below)
+  checkpointer,
   // TODO: Step 5 - Force the response to use the StoryOutput schema (responseFormat: toolStrategy(StoryOutput))
+  responseFormat: toolStrategy(StoryOutput),
 })
 
 // TODO: Step 4 - Name the session "dnd-campaign"
+const config = { configurable: { thread_id: 'dnd-campaign' } }
 
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy' })

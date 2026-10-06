@@ -52,7 +52,10 @@ Returns:
 export const rulesAgent = createAgent({
   model,
   // TODO: Step 1 - Add the queryDndRules tool to the agent
+  tools: [queryDndRules],
   // TODO: Step 2 - Add the name "rules_agent" to the agent
+  name: 'rules_agent',
   // TODO: Step 3 - Add the description "D&D 5e rules lookup: fast, page-referenced answers from the Basic Rules knowledge base." to the agent
+  description: 'D&D 5e rules lookup: fast, page-referenced answers from the Basic Rules knowledge base.',
   systemPrompt: `You are a D&D 5e rules expert. For each rules question, call query_dnd_rules once, then answer briefly with the page reference.`,
 })

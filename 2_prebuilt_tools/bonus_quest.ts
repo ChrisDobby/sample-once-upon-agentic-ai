@@ -4,14 +4,29 @@ import { createAgent, type HITLRequest, type HITLResponse } from 'langchain'
 import { model } from '../shared/model.ts'
 import { runAndPrint } from '../shared/print.ts'
 // TODO: Step 1 - Import createFilesystemMiddleware and LocalShellBackend from deepagents
+import { createFilesystemMiddleware, LocalShellBackend } from 'deepagents'
 // TODO: Step 2 - Import humanInTheLoopMiddleware from langchain
+import { humanInTheLoopMiddleware } from 'langchain'
 
 const arcaneScribe = createAgent({
   model,
   middleware: [
     // TODO: Step 1 - Add the file and shell tools: createFilesystemMiddleware with a LocalShellBackend rooted at process.cwd()
+    createFilesystemMiddleware({ backend: new LocalShellBackend({ rootDir: process.cwd() }) }),
     // TODO: Step 2 - Ask for your approval before each tool call: humanInTheLoopMiddleware with interruptOn set to true
     //   for every tool the middleware adds: ls, read_file, write_file, edit_file, delete, glob, grep and execute
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        ls: true,
+        read_file: true,
+        write_file: true,
+        edit_file: true,
+        delete: true,
+        glob: true,
+        grep: true,
+        execute: true,
+      },
+    }),
   ],
   // Approvals pause the run; the checkpointer keeps it so it can resume after your answer.
   checkpointer: new MemorySaver(),

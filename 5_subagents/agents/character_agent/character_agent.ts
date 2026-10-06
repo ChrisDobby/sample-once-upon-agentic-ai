@@ -197,8 +197,12 @@ Returns:
 export const characterAgent = createAgent({
   model,
   // TODO: Step 1 - Add the createCharacter, findCharacterByName and listAllCharacters tools to the agent
+  tools: [createCharacter, findCharacterByName, listAllCharacters],
   // TODO: Step 2 - Add the name "character_agent" to the agent
+  name: 'character_agent',
   // TODO: Step 3 - Add the description "D&D character management: creates characters (ability scores rolled 4d6 drop lowest), stores them, finds and lists them." to the agent
+  description:
+    'D&D character management: creates characters (ability scores rolled 4d6 drop lowest), stores them, finds and lists them.',
   systemPrompt: `You are a D&D character manager. Use your tools to create, find or list characters.
 When creating a character, roll each ability score with 4d6 drop lowest. If details are missing (gender, some scores), choose or roll them yourself instead of asking back.
 Confirm creations and summarize found characters briefly: class, race, key stats.`,

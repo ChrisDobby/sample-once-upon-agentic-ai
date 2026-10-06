@@ -52,14 +52,21 @@ function subagentTool(agent: ReactAgent<any>) {
 
 // TODO: Step 1 - Create a MultiServerMCPClient with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
 //   and prefixToolNameWithServerName: false so the tool keeps its name, roll_dice
+const mcpClient = new MultiServerMCPClient({
+  mcpServers: { dice: { url: 'http://localhost:8002/mcp', transport: 'http' } },
+  prefixToolNameWithServerName: false,
+})
 
 // TODO: Step 2 - Turn the rulesAgent and the characterAgent into tools with subagentTool
+const subagents = [subagentTool(rulesAgent), subagentTool(characterAgent)]
 
 const agent = createAgent({
   model,
   systemPrompt: `You are a D&D Game Master. Ask your subagents instead of guessing: rules_agent answers rules questions, character_agent creates, finds and lists characters. Every dice roll goes through roll_dice. Never make up what a tool can tell you, and narrate with flair.`,
   // TODO: Step 3 - Add the MCP tools (await mcpClient.getTools()) and the subagent tools to the agent
+  tools: [...(await mcpClient.getTools()), ...subagents],
   // TODO: Step 4 - Force the response to use the StoryOutput schema (responseFormat)
+  responseFormat: StoryOutput,
   // The checkpointer keeps the conversation between requests, in memory, under the thread id below.
   checkpointer: new MemorySaver(),
 })
