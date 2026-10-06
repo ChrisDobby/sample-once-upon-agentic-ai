@@ -102,7 +102,7 @@ ipython_config.py
 # UV
 # This workshop deliberately does NOT track uv.lock: each participant runs `uv sync` once
 # and installs against the latest compatible versions of the SDK. This keeps the workshop
-# aligned with the current Strands API instead of freezing an ever-aging snapshot.
+# aligned with the current SDK APIs instead of freezing an ever-aging snapshot.
 uv.lock
 
 # poetry
@@ -213,7 +213,7 @@ output/
 dnd_knowledge_base/
 **/dnd_knowledge_base/
 
-# Strands harness state (chapter 7): sessions and long-term memory
+# Chapter 7 state: the SQLite session store (.agent/sessions.sqlite)
 .agent/
 
 # Node.js

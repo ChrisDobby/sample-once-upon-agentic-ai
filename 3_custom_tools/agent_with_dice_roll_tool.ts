@@ -1,5 +1,8 @@
-import { Agent } from '@strands-agents/sdk'
-// TODO: Step 1 - Import tool from @strands-agents/sdk and z from zod
+import { createAgent } from 'langchain'
+import { toJsonSchema } from '@langchain/core/utils/json_schema'
+import { model } from '../shared/model.ts'
+import { runAndPrint } from '../shared/print.ts'
+// TODO: Step 1 - Import tool from langchain and z from zod
 
 function rollDice(faces: number = 6): number {
   if (faces < 1) {
@@ -9,15 +12,16 @@ function rollDice(faces: number = 6): number {
   return Math.floor(Math.random() * faces) + 1
 }
 
-// TODO: Step 1 - Transform rollDice into a tool: const rollDiceTool = tool({ name, inputSchema, callback }), with
+// TODO: Step 1 - Transform rollDice into a tool: const rollDiceTool = tool(({ faces }) => rollDice(faces), { name, schema }), with
 //   - name: 'roll_dice'
-//   - inputSchema: z.object({ faces: z.number().int().default(6) })
-//   - callback: ({ faces }) => rollDice(faces)
+//   - schema: z.object({ faces: z.number().int().default(6) })
 // TODO: Step 2 - Give the tool a description, and describe the faces parameter with .describe()
 
-console.log(rollDiceTool.toolSpec) // what Strands tells the model about your tool
+// what LangChain tells the model about your tool
+console.log({ name: rollDiceTool.name, description: rollDiceTool.description, schema: toJsonSchema(rollDiceTool.schema) })
 
-const diceMaster = new Agent({
+const diceMaster = createAgent({
+  model,
   // TODO: Step 3 - Add the tool to the agent
   systemPrompt: `You are Lady Luck, the mystical keeper of dice and fortune in D&D adventures.
     You speak with theatrical flair and always announce dice rolls with appropriate drama.
@@ -25,6 +29,12 @@ const diceMaster = new Agent({
     When rolling ability scores, remember the traditional method: roll 4d6, drop the lowest die.`,
 })
 
-await diceMaster.invoke(
-  'Help me create a new D&D character! Roll the strength, wisdom, charisma and intelligence abilities scores using 4d6 drop lowest method.',
-)
+await runAndPrint(diceMaster, {
+  messages: [
+    {
+      role: 'user',
+      content:
+        'Help me create a new D&D character! Roll the strength, wisdom, charisma and intelligence abilities scores using 4d6 drop lowest method.',
+    },
+  ],
+})

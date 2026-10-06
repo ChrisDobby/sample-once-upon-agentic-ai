@@ -1,7 +1,10 @@
-import { Agent } from '@strands-agents/sdk'
-// TODO: Step 1 - Import httpRequest from @strands-agents/sdk/vended-tools/http-request
+import { createAgent } from 'langchain'
+import { model } from '../shared/model.ts'
+import { runAndPrint } from '../shared/print.ts'
+// TODO: Step 1 - Import httpRequest from ../shared/http_request.ts
 
-const agent = new Agent({
+const agent = createAgent({
+  model,
   tools: [
     // TODO: Step 1 - Add the httpRequest tool to your agent
   ],
@@ -12,4 +15,6 @@ const agent = new Agent({
     where <index> is the lowercase name with hyphens (e.g. fireball, adult-red-dragon).`,
 })
 
-const result = await agent.invoke('What does the Fireball spell do, and how much damage does it deal?')
+await runAndPrint(agent, {
+  messages: [{ role: 'user', content: 'What does the Fireball spell do, and how much damage does it deal?' }],
+})

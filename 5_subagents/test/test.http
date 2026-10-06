@@ -8,7 +8,7 @@ POST http://0.0.0.0:8009/inquire
 POST http://0.0.0.0:8009/inquire
 
 {
-  "question": "Show me what agents are currently discovered."
+  "question": "Which subagents can you ask for help?"
 }
 
 ###
