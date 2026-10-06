@@ -1,12 +1,12 @@
 # Dependabot configuration for this workshop.
 #
-# Rationale: `uv.lock` is intentionally NOT committed (see .gitignore), so routine
+# Rationale: `package-lock.json` is intentionally NOT committed (see .gitignore), so routine
 # version bumps produce PRs that only touch a file participants never install from.
 # We disable dependency-refresh PRs entirely and keep only GitHub security advisories,
 # which surface as separate "security update" PRs that we DO want to see.
 version: 2
 updates:
-  - package-ecosystem: "uv"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"

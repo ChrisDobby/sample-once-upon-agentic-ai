@@ -215,3 +215,8 @@ dnd_knowledge_base/
 
 # Strands harness state (chapter 7): sessions and long-term memory
 .agent/
+
+# Node.js
+# Like uv.lock before it, package-lock.json is deliberately NOT tracked: each participant runs
+# `npm install` once and gets the latest compatible versions of the SDK.
+package-lock.json

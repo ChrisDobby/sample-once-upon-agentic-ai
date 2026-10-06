@@ -1,0 +1,15 @@
+import { Agent } from '@strands-agents/sdk'
+// TODO: Step 1 - Import httpRequest from @strands-agents/sdk/vended-tools/http-request
+
+const agent = new Agent({
+  tools: [
+    // TODO: Step 1 - Add the httpRequest tool to your agent
+  ],
+  systemPrompt: `You are a game master for a Dungeon & Dragon game.
+    When asked about a spell or a monster, look it up on the D&D 5e API and answer from the data:
+    - spells:   https://www.dnd5eapi.co/api/2014/spells/<index>
+    - monsters: https://www.dnd5eapi.co/api/2014/monsters/<index>
+    where <index> is the lowercase name with hyphens (e.g. fireball, adult-red-dragon).`,
+})
+
+const result = await agent.invoke('What does the Fireball spell do, and how much damage does it deal?')
