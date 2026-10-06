@@ -11,7 +11,7 @@ A hands-on workshop that teaches the [Strands Agents TypeScript SDK](https://str
 ## Quick Start
 
 ```bash
-git clone https://github.com/aws-samples/sample-once-upon-agentic-ai.git
+git clone -b typescript-port https://github.com/ChrisDobby/sample-once-upon-agentic-ai.git
 cd sample-once-upon-agentic-ai
 npm install
 ```
@@ -65,8 +65,9 @@ The Python SDK's `make_a2a_client` vended tool has no TypeScript counterpart yet
 
 ## Branches
 
-- `main`: the skeleton you clone, with `// TODO` markers to fill in.
+- `typescript-port`: the skeleton you clone, with `// TODO` markers to fill in.
 - `solution-typescript`: the same files with the answers written below each TODO. Use it if you get stuck.
+- `main`: the original Python version of the workshop, from [aws-samples/sample-once-upon-agentic-ai](https://github.com/aws-samples/sample-once-upon-agentic-ai).
 
 ## Dependencies
 
