@@ -66,7 +66,7 @@ The Python SDK's `make_a2a_client` vended tool has no TypeScript counterpart yet
 ## Branches
 
 - `main`: the skeleton you clone, with `// TODO` markers to fill in.
-- `solution-*`: the answers for the **Python** version of the workshop. They show what each step does, but they are not TypeScript code.
+- `solution-typescript`: the same files with the answers written below each TODO. Use it if you get stuck.
 
 ## Dependencies
 
