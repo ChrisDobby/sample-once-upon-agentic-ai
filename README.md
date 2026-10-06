@@ -11,7 +11,7 @@ A hands-on workshop that teaches [LangChain.js](https://www.npmjs.com/package/la
 ## Quick Start
 
 ```bash
-git clone https://github.com/aws-samples/sample-once-upon-agentic-ai.git
+git clone -b langchain-port https://github.com/ChrisDobby/sample-once-upon-agentic-ai.git
 cd sample-once-upon-agentic-ai
 npm install
 ```
@@ -66,8 +66,9 @@ Before the first run, build the knowledge base: put `DnD_BasicRules_2018.pdf` in
 
 ## Branches
 
-- `main`: the skeleton you clone, with `// TODO` markers to fill in.
+- `langchain-port`: the skeleton you clone, with `// TODO` markers to fill in.
 - `solution-langchain`: the same files with the answers written below each TODO. Use it if you get stuck.
+- `main`: the original Python version of the workshop, from [aws-samples/sample-once-upon-agentic-ai](https://github.com/aws-samples/sample-once-upon-agentic-ai).
 
 ## Dependencies
 
