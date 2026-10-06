@@ -10,8 +10,8 @@ const arcaneScribe = createAgent({
   model,
   middleware: [
     // TODO: Step 1 - Add the file and shell tools: createFilesystemMiddleware with a LocalShellBackend rooted at process.cwd()
-    // TODO: Step 2 - Ask for your approval before writing, editing or running anything: humanInTheLoopMiddleware
-    //   with interruptOn { write_file: true, edit_file: true, execute: true }
+    // TODO: Step 2 - Ask for your approval before each tool call: humanInTheLoopMiddleware with interruptOn set to true
+    //   for every tool the middleware adds: ls, read_file, write_file, edit_file, delete, glob, grep and execute
   ],
   // Approvals pause the run; the checkpointer keeps it so it can resume after your answer.
   checkpointer: new MemorySaver(),
