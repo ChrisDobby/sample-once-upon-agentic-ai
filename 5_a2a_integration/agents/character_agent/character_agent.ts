@@ -190,6 +190,7 @@ Returns:
 function createAgent(contextId: string): Agent {
   return new Agent({
     // TODO: Step 1 - Add the createCharacter, findCharacterByName and listAllCharacters tools to the agent
+    tools: [createCharacter, findCharacterByName, listAllCharacters],
     systemPrompt: `You are a D&D character manager. Use your tools to create, find or list characters.
 When creating a character, roll each ability score with 4d6 drop lowest. If details are missing (gender, some scores), choose or roll them yourself instead of asking back.
 Confirm creations and summarize found characters briefly: class, race, key stats.`,
@@ -197,7 +198,15 @@ Confirm creations and summarize found characters briefly: class, race, key stats
 }
 
 // TODO: Step 2 - Create an A2AExpressServer with the createAgent factory (agentFactory) on port 8001
-// TODO: Step 3 - Add the name "Character Agent" to the server
-// TODO: Step 4 - Add the description "D&D character management: creates characters (ability scores rolled 4d6 drop lowest), stores them, finds and lists them." to the server
+const server = new A2AExpressServer({
+  agentFactory: createAgent,
+  port: 8001,
+  // TODO: Step 3 - Add the name "Character Agent" to the server
+  name: 'Character Agent',
+  // TODO: Step 4 - Add the description "D&D character management: creates characters (ability scores rolled 4d6 drop lowest), stores them, finds and lists them." to the server
+  description:
+    'D&D character management: creates characters (ability scores rolled 4d6 drop lowest), stores them, finds and lists them.',
+})
 
 // TODO: Step 5 - Start the A2A server
+await server.serve()

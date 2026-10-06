@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { createMcpExpressApp } from '@modelcontextprotocol/sdk/server/express.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 // TODO: Step 1 - Import McpServer from @modelcontextprotocol/sdk/server/mcp.js
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 
 const PORT = 8002
 
@@ -37,15 +38,26 @@ Returns:
 // The server is stateless: every HTTP request gets a fresh McpServer and transport.
 function createServer(): McpServer {
   // TODO: Step 1 - Create an McpServer named "dice-roll"
-  const mcp = new McpServer({
-    // name:
-    // version:
-  })
+  const mcp = new McpServer({ name: 'dice-roll', version: '1.0.0' })
 
   // TODO: Step 2 - Register rollDice as the MCP tool "roll_dice" with registerTool
   //   - description: ROLL_DICE_DESCRIPTION
   //   - inputSchema: { faces: z.number().int().default(6).describe('Number of faces on the die, 1 or more. Use 20 for a d20, 6 for a d6, 100 for a percentile die. Defaults to 6.') }
   //   - callback: return { content: [{ type: 'text', text: String(rollDice(faces)) }] }
+  mcp.registerTool(
+    'roll_dice',
+    {
+      description: ROLL_DICE_DESCRIPTION,
+      inputSchema: {
+        faces: z
+          .number()
+          .int()
+          .default(6)
+          .describe('Number of faces on the die, 1 or more. Use 20 for a d20, 6 for a d6, 100 for a percentile die. Defaults to 6.'),
+      },
+    },
+    async ({ faces }) => ({ content: [{ type: 'text', text: String(rollDice(faces)) }] }),
+  )
 
   return mcp
 }
@@ -55,7 +67,7 @@ const app = createMcpExpressApp()
 app.post('/mcp', async (req, res) => {
   const mcp = createServer()
   // TODO: Step 3 - Create the streamable HTTP transport: a StreamableHTTPServerTransport with sessionIdGenerator: undefined (stateless)
-
+  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
   res.on('close', () => {
     transport.close()
     mcp.close()

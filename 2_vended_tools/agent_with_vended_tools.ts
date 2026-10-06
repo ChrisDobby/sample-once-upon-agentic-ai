@@ -1,9 +1,11 @@
 import { Agent } from '@strands-agents/sdk'
 // TODO: Step 1 - Import httpRequest from @strands-agents/sdk/vended-tools/http-request
+import { httpRequest } from '@strands-agents/sdk/vended-tools/http-request'
 
 const agent = new Agent({
   tools: [
     // TODO: Step 1 - Add the httpRequest tool to your agent
+    httpRequest,
   ],
   systemPrompt: `You are a game master for a Dungeon & Dragon game.
     When asked about a spell or a monster, look it up on the D&D 5e API and answer from the data:

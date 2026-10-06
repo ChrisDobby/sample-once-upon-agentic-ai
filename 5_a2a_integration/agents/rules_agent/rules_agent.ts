@@ -49,12 +49,20 @@ Returns:
 function createAgent(contextId: string): Agent {
   return new Agent({
     // TODO: Step 1 - Add the queryDndRules tool to the agent
+    tools: [queryDndRules],
     systemPrompt: `You are a D&D 5e rules expert. For each rules question, call query_dnd_rules once, then answer briefly with the page reference.`,
   })
 }
 
 // TODO: Step 2 - Create an A2AExpressServer with the createAgent factory (agentFactory) on port 8000
-// TODO: Step 3 - Add the name "Rules Agent" to the server
-// TODO: Step 4 - Add the description "D&D 5e rules lookup: fast, page-referenced answers from the Basic Rules knowledge base." to the server
+const server = new A2AExpressServer({
+  agentFactory: createAgent,
+  port: 8000,
+  // TODO: Step 3 - Add the name "Rules Agent" to the server
+  name: 'Rules Agent',
+  // TODO: Step 4 - Add the description "D&D 5e rules lookup: fast, page-referenced answers from the Basic Rules knowledge base." to the server
+  description: 'D&D 5e rules lookup: fast, page-referenced answers from the Basic Rules knowledge base.',
+})
 
 // TODO: Step 5 - Start the A2A server
+await server.serve()

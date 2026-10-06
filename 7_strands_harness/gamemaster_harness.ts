@@ -4,6 +4,7 @@ import express from 'express'
 import { z } from 'zod'
 import { makeA2aClient } from '../5_a2a_integration/utils/a2a_client.ts'
 // TODO: Step 1 - Import createHarness from @strands-agents/harness
+import { createHarness } from '@strands-agents/harness'
 
 const app = express()
 app.use(cors())
@@ -43,11 +44,17 @@ const a2aClient = makeA2aClient({
 
 const agent = await createHarness({
   // TODO: Step 1 - Pass the INSTRUCTIONS to the harness
+  instructions: INSTRUCTIONS,
   // TODO: Step 2 - Add the dice MCP server { dice: { url: 'http://127.0.0.1:8002/mcp' } } to mcpServers
+  mcpServers: { dice: { url: 'http://127.0.0.1:8002/mcp' } },
   // TODO: Step 3 - Add the a2aClient tool to the harness
+  tools: [a2aClient],
   // TODO: Step 4 - Disable the built-in tools
+  builtinTools: [],
   // TODO: Step 5 - Name the session "dnd-campaign"
+  session: { id: 'dnd-campaign' },
   // TODO: Step 6 - Force the response to use the StoryOutput schema (structuredOutputSchema)
+  structuredOutputSchema: StoryOutput,
 })
 
 app.get('/health', (req, res) => {

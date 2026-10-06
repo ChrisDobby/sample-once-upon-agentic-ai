@@ -1,10 +1,15 @@
 import { Agent } from '@strands-agents/sdk'
 // TODO: Step 1 - Import makeShell from @strands-agents/sdk/vended-tools/shell and fileEditor from @strands-agents/sdk/vended-tools/file-editor
+import { makeShell } from '@strands-agents/sdk/vended-tools/shell'
+import { fileEditor } from '@strands-agents/sdk/vended-tools/file-editor'
 // TODO: Step 2 - Import HumanInTheLoop from @strands-agents/sdk/vended-interventions/hitl
+import { HumanInTheLoop } from '@strands-agents/sdk/vended-interventions/hitl'
 
 const arcaneScribe = new Agent({
   // TODO: Step 1 - Add a shell tool (makeShell()) and the fileEditor tool to your agent
+  tools: [makeShell(), fileEditor],
   // TODO: Step 2 - Ask for your approval before each tool call with a HumanInTheLoop intervention in 'stdio' mode
+  interventions: [new HumanInTheLoop({ ask: 'stdio' })],
   systemPrompt: `You are Kiro the Grey Hat, a wizard who specializes in the ancient art of code magic.
     When asked to create spells (code), you inscribe them on parchment (files) in the directory ${process.cwd()}
     and then cast them to demonstrate their power.`,
