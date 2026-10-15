@@ -6,7 +6,7 @@ _"Roll for Initiative... in TypeScript!"_
 
 A hands-on workshop that teaches [LangChain.js](https://www.npmjs.com/package/langchain) by building a Dungeons & Dragons Game Master: one agent first, then tools, an MCP server, subagents, a web interface, and finally the same system rebuilt with [Deep Agents](https://www.npmjs.com/package/deepagents).
 
-**The instructions live in the AWS workshop: [Once Upon Agentic AI](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US/0-pre-requisites).** That workshop is written for the Strands Agents SDK in Python; this repository is a LangChain.js port of its code. The chapters, prompts and JSON responses are the same, but the APIs are LangChain's (`createAgent`, `tool()`, `MultiServerMCPClient`, `createDeepAgent`, …). Chapter 5 uses in-process subagents instead of A2A, and several steps differ from the workshop text: see [Differences from the Strands workshop](#differences-from-the-strands-workshop). Each step's `// TODO` comment names the API to use.
+**The instructions live in [`workshop/`](workshop/README.md)**, one page per chapter, starting with [Chapter 0](workshop/0_pre_requisites.md). They are adapted from the AWS workshop [Once Upon Agentic AI](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US), which is written for the Strands Agents SDK in Python; this repository is a LangChain.js port of its code. The chapters, prompts and JSON responses are the same, but the APIs are LangChain's (`createAgent`, `tool()`, `MultiServerMCPClient`, `createDeepAgent`, …). Chapter 5 uses in-process subagents instead of A2A: see [Differences from the Strands workshop](#differences-from-the-strands-workshop). Each step's `// TODO` comment names the API to use.
 
 ## Quick Start
 
@@ -16,23 +16,23 @@ cd sample-once-upon-agentic-ai
 npm install
 ```
 
-You need Node.js 22 or newer. The files run directly with [`tsx`](https://tsx.is/), with no build step. `npm run typecheck` type-checks them; on `main` it reports an error at each unfinished TODO, and those errors go away as you complete the steps.
+You need Node.js 22 or newer. The files run directly with [`tsx`](https://tsx.is/), with no build step. `npm run typecheck` type-checks them; on `langchain-port` it reports an error at each unfinished TODO, and those errors go away as you complete the steps.
 
-Every chapter runs on Claude Sonnet 4.6 on Amazon Bedrock, in `us-west-2`: see [`shared/model.ts`](shared/model.ts). You need AWS credentials with access to that model, see [Chapter 0](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US/0-pre-requisites).
+Every chapter runs on Claude Sonnet 4.6 on Amazon Bedrock, in `us-west-2`: see [`shared/model.ts`](shared/model.ts). You need AWS credentials with access to that model, see [Chapter 0](workshop/0_pre_requisites.md).
 
 ## The Adventure Map
 
 | Chapter | Folder | What you build | Run it |
 |---|---|---|---|
-| 0. An Unexpected Adventure | [instructions](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US/0-pre-requisites) | Set up Node.js and this repository | |
-| 1. The Art of Agent Summoning | [`1_langchain_basics/`](1_langchain_basics/) | Your first agent with `createAgent`, a system prompt, a console tracer | `npm run ch1` |
-| 2. The Adventurer's Arsenal - Prebuilt Tools | [`2_prebuilt_tools/`](2_prebuilt_tools/) | A ready-made `http_request` tool on the D&D 5e API; bonus: Deep Agents' file and shell tools gated by `humanInTheLoopMiddleware` | `npm run ch2`, `npm run ch2:bonus` |
-| 3. The Art of Magical Forging | [`3_custom_tools/`](3_custom_tools/) | Your own `tool()`: the dice roller | `npm run ch3` |
-| 4. Planar Portals - MCP | [`4_mcp_integration/`](4_mcp_integration/) | The same dice roller served over MCP, and an agent that consumes it with `MultiServerMCPClient` | `npm run ch4:server`, then `npm run ch4:client` |
-| 5. The Grand Alliance - Subagents | [`5_subagents/`](5_subagents/) | A Rules Agent and a Character Agent as subagents of a Game Master with memory and structured output | see [Chapter 5](#chapter-5-services) |
-| 6. Web Interface Testing | [web UI](https://aws-samples.github.io/sample-once-upon-agentic-ai/) | Play with your Game Master through the browser | |
-| 7. The Enchanted Armour - Deep Agents | [`7_deep_agents/`](7_deep_agents/) | The Game Master API rebuilt with `createDeepAgent()` and a session saved on disk | `npm run ch7` |
-| Final cleanup | [instructions](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US/cleanup) | Stop your services and delete the generated files (`5_subagents/utils/dnd_knowledge_base/`, `.agent/`) | |
+| [0. An Unexpected Adventure](workshop/0_pre_requisites.md) | | Set up Node.js and this repository | |
+| [1. The Art of Agent Summoning](workshop/1_langchain_basics.md) | [`1_langchain_basics/`](1_langchain_basics/) | Your first agent with `createAgent`, a system prompt, a console tracer | `npm run ch1` |
+| [2. The Adventurer's Arsenal - Prebuilt Tools](workshop/2_prebuilt_tools.md) | [`2_prebuilt_tools/`](2_prebuilt_tools/) | A ready-made `http_request` tool on the D&D 5e API; bonus: Deep Agents' file and shell tools gated by `humanInTheLoopMiddleware` | `npm run ch2`, `npm run ch2:bonus` |
+| [3. The Art of Magical Forging](workshop/3_custom_tools.md) | [`3_custom_tools/`](3_custom_tools/) | Your own `tool()`: the dice roller | `npm run ch3` |
+| [4. Planar Portals - MCP](workshop/4_mcp_integration.md) | [`4_mcp_integration/`](4_mcp_integration/) | The same dice roller served over MCP, and an agent that consumes it with `MultiServerMCPClient` | `npm run ch4:server`, then `npm run ch4:client` |
+| [5. The Grand Alliance - Subagents](workshop/5_subagents.md) | [`5_subagents/`](5_subagents/) | A Rules Agent and a Character Agent as subagents of a Game Master with memory and structured output | see [Chapter 5](#chapter-5-services) |
+| [6. Web Interface Testing](workshop/6_ui_testing.md) | [web UI](https://aws-samples.github.io/sample-once-upon-agentic-ai/) | Play with your Game Master through the browser | |
+| [7. The Enchanted Armour - Deep Agents](workshop/7_deep_agents.md) | [`7_deep_agents/`](7_deep_agents/) | The Game Master API rebuilt with `createDeepAgent()` and a session saved on disk | `npm run ch7` |
+| [Final cleanup](workshop/cleanup.md) | | Stop your services and delete the generated files (`5_subagents/utils/dnd_knowledge_base/`, `.agent/`) | |
 
 Complete the chapters in order: each one reuses what the previous one built.
 
