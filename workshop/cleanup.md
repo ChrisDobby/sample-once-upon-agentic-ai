@@ -17,7 +17,7 @@ agentcore remove all
 AWS_REGION=us-west-2 agentcore deploy --yes
 ```
 
-`remove all` empties `agentcore/agentcore.json`; the deploy that follows deletes what the stack created: the AgentCore runtime, its IAM role, the ECR repository with the image and the CodeBuild project. Check with `agentcore status`, then put the project file back so the repository is as you cloned it:
+`remove all` empties `agentcore/agentcore.json`; the deploy that follows deletes what the stack created: the AgentCore runtime, its IAM role, the ECR repository with the image and the CodeBuild project. Only your project is removed: the other players' runtimes are untouched. Check with `agentcore status`, then put the project file back, with its original name, so the repository is as you cloned it:
 
 ```bash
 git restore agentcore/agentcore.json
@@ -25,8 +25,8 @@ git restore agentcore/agentcore.json
 
 Two things are left on purpose:
 
-1. **Three CloudWatch log groups**: the runtime's `/aws/bedrock-agentcore/runtimes/OnceUponAgenticAI_GameMaster-<id>-DEFAULT`, the image build's `/aws/codebuild/AgentCore-OnceUponAgenticAI-default-container-builder`, and the build trigger's `/aws/lambda/AgentCore-OnceUponAgentic-...`. Delete them in the CloudWatch console if you don't want to keep the logs.
-2. **The `CDKToolkit` stack**, created by the first deploy's CDK bootstrap, with its staging bucket `cdk-hnb659fds-assets-<account>-<region>` (it keeps the build contexts you uploaded) and its ECR repository. Other CDK deployments in the same account and region share it: delete it in the CloudFormation console only if nothing else uses it, after emptying the bucket.
+1. **Three CloudWatch log groups**, named after your project: the runtime's `/aws/bedrock-agentcore/runtimes/<project>_GameMaster-<id>-DEFAULT`, the image build's `/aws/codebuild/AgentCore-<project>-default-container-builder`, and the build trigger's `/aws/lambda/AgentCore-<project>...` (truncated). Delete yours in the CloudWatch console if you don't want to keep the logs.
+2. **The `CDKToolkit` stack**, created by the first deploy's CDK bootstrap, with its staging bucket `cdk-hnb659fds-assets-<account>-<region>` (it keeps the build contexts that were uploaded) and its ECR repository. Every CDK deployment in the account and region shares it, the other players' included: **in a shared account, leave it** to the workshop organizer, who deletes it after the workshop if nothing else uses it, after emptying the bucket.
 
 ## Amazon Bedrock
 

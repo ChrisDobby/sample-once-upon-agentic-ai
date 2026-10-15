@@ -15,7 +15,7 @@ Your Game Master lives on your laptop, behind three terminals. In this chapter y
 
 The container listens on `0.0.0.0:8080` and runs on **arm64**. Every invocation carries a session id in the `X-Amzn-Bedrock-AgentCore-Runtime-Session-Id` header: calls with the same session id reach the same microVM. See the [HTTP protocol contract](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-http-protocol-contract.html).
 
-**⚠️ This chapter creates AWS resources** (an AgentCore runtime, an ECR repository, a CodeBuild project, an IAM role, a CloudFormation stack) and is billed while you use it. The [final cleanup](cleanup.md) removes them.
+**⚠️ This chapter creates AWS resources** (an AgentCore runtime, an ECR repository, a CodeBuild project, an IAM role, a CloudFormation stack) and is billed while you use it. The [final cleanup](cleanup.md) removes them. If you share an AWS account with other players, each of you deploys your own runtime, under your own name ([Part 2, Step 2](#step-2-name-your-project)).
 
 ## From Three Terminals to One Container
 
@@ -136,11 +136,27 @@ The CLI reads [`agentcore/agentcore.json`](../agentcore/agentcore.json), which t
 
 `buildContextPath: "."` makes the repository root the image's build context, because the Game Master imports `shared/`, `4_mcp_integration/` and `5_subagents/`. The [`.dockerignore`](../.dockerignore) keeps only those folders, `8_agentcore/` and `package.json`. The CLI's TypeScript templates cover only Strands and the Vercel AI SDK, so this project was added as bring-your-own code (`agentcore add agent --type byo --language TypeScript --build Container`). The `agentcore/cdk/` folder is the CDK app the CLI generated: it turns `agentcore.json` into CloudFormation.
 
-### Step 2: Check the Knowledge Base
+### Step 2: Name Your Project
+
+Everything the deploy creates is named after the project in `agentcore.json`: the stack `AgentCore-<project>-default`, the runtime `<project>_GameMaster`, its image repository, build project and logs. The repository ships the project as `OnceUponAgenticAI`, so in an AWS account shared by several players, everyone would deploy over the same stack and the same runtime. Give yours a name of its own:
+
+```bash
+npm run ch8:name -- <your-name>
+```
+
+For example, `npm run ch8:name -- alice`:
+
+```
+Project OnceUponAlice: your stack will be AgentCore-OnceUponAlice-default, your runtime OnceUponAlice_GameMaster
+```
+
+[`8_agentcore/name_project.ts`](../8_agentcore/name_project.ts) (given code) writes the name into `agentcore/agentcore.json`. Use letters and digits, 15 at most, and a name no other player uses, even with different capitals: the image repository's name is lowercase. Alone in your account, you can skip this step.
+
+### Step 3: Check the Knowledge Base
 
 The image bakes in `5_subagents/utils/dnd_knowledge_base/`, the Chroma data you built in Chapter 5. The build stops with `Knowledge base missing` if it isn't there: rebuild it with [Chapter 5, Part 1](5_subagents.md) if you deleted it. The PDF itself stays out of the image.
 
-### Step 3: Deploy
+### Step 4: Deploy
 
 From the repository root, with AWS credentials for the account you want to deploy to:
 
@@ -151,8 +167,8 @@ AWS_REGION=us-west-2 agentcore deploy --yes
 The deploy:
 
 1. Writes `agentcore/aws-targets.json` from your credentials: your account and the region (gitignored, it holds your account ID).
-2. Synthesizes the CloudFormation stack `AgentCore-OnceUponAgenticAI-default`.
-3. The first time in an account and region, **bootstraps the CDK** (`--yes` allows it): a stack named `CDKToolkit` with a bucket and roles that CDK deployments share.
+2. Synthesizes your CloudFormation stack, `AgentCore-<project>-default`.
+3. The first time in an account and region, **bootstraps the CDK** (`--yes` allows it): a stack named `CDKToolkit` with a bucket and roles that every CDK deployment in the account and region shares, yours and the other players'. In a shared account, the workshop organizer should bootstrap it once before the workshop (one `agentcore deploy`, or `npx cdk bootstrap aws://<account>/us-west-2`), so that players deploying at the same time don't all try to create it.
 4. Uploads the build context to S3. **AWS CodeBuild builds the arm64 image**, so you don't need Docker on your machine, and pushes it to ECR.
 5. Creates the IAM execution role (it may call Bedrock models and inference profiles, write logs and traces) and the AgentCore runtime.
 
@@ -162,7 +178,7 @@ The first deploy takes several minutes, mostly the image build. Then:
 agentcore status
 ```
 
-prints the runtime and its ARN, `arn:aws:bedrock-agentcore:us-west-2:<account>:runtime/...`.
+prints your runtime and its ARN, `arn:aws:bedrock-agentcore:us-west-2:<account>:runtime/<project>_GameMaster-<id>`. The CLI only works on the project in your `agentcore/` folder: `status`, `invoke`, `logs` and the cleanup never touch another player's runtime.
 
 **Permissions:** deploying needs CloudFormation, IAM, S3, ECR, CodeBuild and AgentCore permissions in the account. See [AgentCore CLI permissions](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html#runtime-permissions-cli).
 
@@ -222,7 +238,7 @@ Congratulations! Your Game Master runs in the cloud, in a microVM per session, a
 **What you've learned:**
 - ✅ The AgentCore Runtime contract: `/ping`, `/invocations`, port 8080, arm64, a session id per caller
 - ✅ Packaging an agent and its local services in one container
-- ✅ Deploying with the AgentCore CLI (`agentcore deploy`, `status`, `invoke`, `logs`)
+- ✅ Deploying with the AgentCore CLI (`agentcore deploy`, `status`, `invoke`, `logs`), one runtime per player
 - ✅ Calling a runtime with `InvokeAgentRuntime`, and why a browser needs a proxy
 - ✅ What a session-scoped microVM keeps, and what it forgets
 
