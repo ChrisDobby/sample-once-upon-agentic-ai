@@ -259,7 +259,7 @@ curl -X POST http://127.0.0.1:8009/inquire \
 
 Watch the terminals while a request runs:
 
-- **Game Master terminal**: `Processing request...`, then, once the turn is over, each tool call of the turn (`🔧 Tool: rules_agent {"request":"..."}`, `🔧 Tool: roll_dice {"faces":20}`, ...) with its result, and the structured response. The Character Agent runs in this process too, so its tools' logs appear here as well: `🔍 Searching for character with name: 'Thorin'`, `✅ Created character Thorin (Fighter Dwarf) with id ...`.
+- **Game Master terminal**: `Processing request...`, then, once the turn is over, each tool call of the turn (`🔧 Tool: rules_agent {"request":"..."}`, `🔧 Tool: roll_dice {"faces":20}`, ...) with its result, and the structured response. That last one shows up as a tool call too, `🔧 Tool: StoryOutput {...}`: that is how LangChain gets the structured output from the model. The Character Agent runs in this process too, so its tools' logs appear here as well: `🔍 Searching for character with name: 'Thorin'`, `✅ Created character Thorin (Fighter Dwarf) with id ...`.
 - **Dice server terminal**: a `🎲 DICE ROLL` line for every roll.
 
 The Rules Agent's own tool calls are not printed: `subagentTool` returns only its final answer, which is what you see as the `rules_agent` result.

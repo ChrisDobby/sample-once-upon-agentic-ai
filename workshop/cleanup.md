@@ -25,12 +25,12 @@ Everything below was generated during the workshop. Run these from the repositor
 
 - `5_subagents/utils/DnD_BasicRules_2018.pdf` (the PDF you downloaded) and `5_subagents/utils/dnd_knowledge_base/` (the Chroma data). Both are gitignored, delete them freely.
 - `.agent/`: the Chapter 7 session database. Gitignored, delete it freely.
-- The scroll Kiro wrote in the Chapter 2 bonus quest, such as `fibonacci_scroll.py`, at the repository root.
+- The scroll Kiro wrote in the Chapter 2 bonus quest, such as `fibonacci.py`, at the repository root.
 - `5_subagents/agents/character_agent/characters.json`: the characters you created. **This file is tracked in git** (it ships with Arnaud), so restore it rather than deleting it:
   ```bash
   git restore 5_subagents/agents/character_agent/characters.json
   ```
-- `node_modules/`, if you no longer need the dependencies.
+- `node_modules/` and `package-lock.json` (gitignored), if you no longer need the dependencies.
 
 `git status` shows anything else you created or changed along the way.
 

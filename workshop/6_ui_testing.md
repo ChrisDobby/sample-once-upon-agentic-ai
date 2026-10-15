@@ -38,7 +38,9 @@ Processing request...
 
 🔧 Tool: roll_dice {"faces":20}
 ✓ roll_dice: 14
-...
+
+🔧 Tool: StoryOutput {"response":"...","actions_suggestions":[...],...}
+✓ StoryOutput: {"response":"...",...}
 {
   response: '...',
   actions_suggestions: [ ... ],
