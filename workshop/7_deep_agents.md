@@ -106,7 +106,7 @@ curl -X POST http://127.0.0.1:8009/inquire \
   -d '{"question": "Where did we stop last time, and what is my character called?"}'
 ```
 
-Where did the campaign go between the two runs? Look at the `.agent/` folder that appeared at the repository root: `sessions.sqlite` is the checkpointer's database. Every turn of every thread is saved there, under its thread id, `dnd-campaign` here. At start-up nothing is loaded; on the next request the checkpointer reads the latest checkpoint of that thread, and the agent picks up where it stopped. Change the thread id and you start a new campaign; the old one stays in the database. The folder is gitignored, so it stays on your machine.
+Where did the campaign go between the two runs? Look at the `.agent/` folder that appeared at the repository root: `sessions.sqlite` is the checkpointer's database (the `-wal` and `-shm` files next to it are SQLite's working files). Every turn of every thread is saved there, under its thread id, `dnd-campaign` here. At start-up nothing is loaded; on the next request the checkpointer reads the latest checkpoint of that thread, and the agent picks up where it stopped. Change the thread id and you start a new campaign; the old one stays in the database. The folder is gitignored, so it stays on your machine.
 
 **If every `/inquire` fails** after an error in the middle of a turn, the saved session may be broken: stop the server and delete `.agent/`. The campaign restarts from scratch.
 

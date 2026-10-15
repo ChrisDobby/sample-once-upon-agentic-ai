@@ -83,7 +83,7 @@ When the agent wants to call a gated tool, the run **pauses**: it stops and retu
 
 ```
 Approve "write_file"?
-  Input: {"file_path":"/.../fibonacci_scroll.py","content":"..."} (y/n):
+  Input: {"file_path":"/.../fibonacci.py","content":"..."} (y/n):
 ```
 
 Type `y` and press Enter to allow the tool to execute, or `n` to refuse. To resume, the run must have been saved somewhere: that is the `checkpointer: new MemorySaver()` already in the agent. Without Step 2, the agent writes files and runs commands **without asking you anything**: try it once with Step 2 left out to see the difference.
@@ -96,8 +96,8 @@ npm run ch2:bonus
 
 Approve each call as it comes:
 
-1. `Approve "write_file"?`: Kiro writes the scroll (for example `fibonacci_scroll.py` or `.js`) at the **repository root**, the `process.cwd()` of `npm run`. Type `y`.
-2. `Approve "execute"?`: Kiro casts the scroll, for example `python3 fibonacci_scroll.py` or `node fibonacci_scroll.js`. Type `y` for each call. Kiro may also look around first with `ls` or `read_file`: each of those asks too.
+1. `Approve "write_file"?`: Kiro writes the scroll (for example `fibonacci.py`) at the **repository root**, the `process.cwd()` of `npm run`. Type `y`.
+2. `Approve "execute"?`: Kiro casts the scroll, for example `python3 /.../fibonacci.py`. Type `y` for each call. Kiro may also look around first with `ls` or `read_file`: each of those asks too.
 3. Kiro reports the first ten Fibonacci numbers.
 
 Try `n` on one of the calls to see how the agent reacts to a refusal: it receives "The user denied this action" as the tool's result and has to make do.
