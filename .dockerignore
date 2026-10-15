@@ -1,0 +1,8 @@
+# Build context of the Chapter 8 image (8_agentcore/Dockerfile): keep only what it copies.
+*
+!package.json
+!shared/
+!4_mcp_integration/
+!5_subagents/
+!8_agentcore/
+5_subagents/utils/*.pdf

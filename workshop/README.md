@@ -53,8 +53,14 @@ Your journey through the realms of AI agents is a progressive quest. **Each chap
 - Resume a campaign across restarts with a session saved in SQLite
 - Know when to pick Deep Agents and when to stay on `createAgent`
 
+### ☁️ [Chapter 8: The Flying Citadel - Deploy to AgentCore](8_agentcore.md)
+**Run the Game Master on Amazon Bedrock AgentCore Runtime**
+- Fit the Game Master to the AgentCore contract: `/ping`, `/invocations`, a session id per caller
+- Package it with its dice server and knowledge base in one container
+- Deploy with the AgentCore CLI, then play from the web interface through a signed proxy
+
 ### 🧹 [Final Cleanup](cleanup.md)
-**Stop your services and delete the generated files**
+**Stop your services, delete the generated files and the AWS resources of Chapter 8**
 
 ## 🎒 Preparing for Your Quest
 
@@ -121,6 +127,7 @@ By completing this workshop, you'll master:
 - ✅ **External integration**: serve and consume tools over MCP
 - ✅ **Multi-agent systems**: build a Game Master that delegates to specialized subagents
 - ✅ **Deep Agents**: rebuild the same system with `createDeepAgent` and a persistent session
+- ✅ **Deployment**: run your agent on Amazon Bedrock AgentCore Runtime
 
 ## 🚀 Ready to Begin?
 
@@ -132,5 +139,6 @@ Your adventure awaits! Start with [Chapter 0: An Unexpected Adventure](0_pre_req
 
 - **[LangChain.js documentation](https://docs.langchain.com/oss/javascript/langchain/overview)**: agents, tools, middleware, structured output
 - **[Deep Agents documentation](https://docs.langchain.com/oss/javascript/deepagents/overview)**: the pre-assembled agent of Chapter 7
+- **[Amazon Bedrock AgentCore documentation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html)** and the **[AgentCore CLI](https://github.com/aws/agentcore-cli)**: the deployment of Chapter 8
 - **[Model Context Protocol](https://modelcontextprotocol.io/)** and its **[TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)**
 - **[The original Strands workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/e1493217-4bc7-42f4-87d9-e231acd743bc/en-US)**: the Python version these pages are adapted from

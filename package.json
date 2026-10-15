@@ -18,9 +18,12 @@
     "ch5:kb": "cd 5_subagents/utils && tsx create_knowledge_base.ts",
     "ch5:gamemaster": "tsx 5_subagents/agents/gamemaster_orchestrator/gamemaster_orchestrator.ts",
     "ch7": "tsx 7_deep_agents/gamemaster_deep_agent.ts",
+    "ch8:local": "bash 8_agentcore/start.sh",
+    "ch8:proxy": "tsx 8_agentcore/invoke_proxy.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-agentcore": "^3.1152.0",
     "@chroma-core/default-embed": "^0.1.8",
     "@langchain/aws": "^1.4.6",
     "@langchain/core": "^1.2.16",

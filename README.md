@@ -18,7 +18,7 @@ npm install
 
 You need Node.js 22 or newer. The files run directly with [`tsx`](https://tsx.is/), with no build step. `npm run typecheck` type-checks them; on `langchain-port` it reports an error at each unfinished TODO, and those errors go away as you complete the steps.
 
-Every chapter runs on Claude Sonnet 4.6 on Amazon Bedrock, in `us-west-2`: see [`shared/model.ts`](shared/model.ts). You need AWS credentials with access to that model, see [Chapter 0](workshop/0_pre_requisites.md).
+Every chapter runs on Claude Sonnet 4.6 on Amazon Bedrock, in `us-west-2`: see [`shared/model.ts`](shared/model.ts). You need AWS credentials with access to that model, see [Chapter 0](workshop/0_pre_requisites.md). Chapters 1 to 7 run on your machine; Chapter 8 deploys to your AWS account.
 
 ## The Adventure Map
 
@@ -32,7 +32,8 @@ Every chapter runs on Claude Sonnet 4.6 on Amazon Bedrock, in `us-west-2`: see [
 | [5. The Grand Alliance - Subagents](workshop/5_subagents.md) | [`5_subagents/`](5_subagents/) | A Rules Agent and a Character Agent as subagents of a Game Master with memory and structured output | see [Chapter 5](#chapter-5-services) |
 | [6. Web Interface Testing](workshop/6_ui_testing.md) | [web UI](https://aws-samples.github.io/sample-once-upon-agentic-ai/) | Play with your Game Master through the browser | |
 | [7. The Enchanted Armour - Deep Agents](workshop/7_deep_agents.md) | [`7_deep_agents/`](7_deep_agents/) | The Game Master API rebuilt with `createDeepAgent()` and a session saved on disk | `npm run ch7` |
-| [Final cleanup](workshop/cleanup.md) | | Stop your services and delete the generated files (`5_subagents/utils/dnd_knowledge_base/`, `.agent/`) | |
+| [8. The Flying Citadel - AgentCore](workshop/8_agentcore.md) | [`8_agentcore/`](8_agentcore/), [`agentcore/`](agentcore/) | The Chapter 7 Game Master deployed to Amazon Bedrock AgentCore Runtime, with a local proxy for the web UI | `npm run ch8:local`, `agentcore deploy`, `npm run ch8:proxy` |
+| [Final cleanup](workshop/cleanup.md) | | Stop your services, delete the generated files (`5_subagents/utils/dnd_knowledge_base/`, `.agent/`) and the Chapter 8 AWS resources | |
 
 Complete the chapters in order: each one reuses what the previous one built.
 
@@ -63,6 +64,7 @@ Before the first run, build the knowledge base: put `DnD_BasicRules_2018.pdf` in
 | 4 | The server is unchanged from the Strands TypeScript port. The client is `MultiServerMCPClient`; `prefixToolNameWithServerName: false` keeps the tool's name `roll_dice` instead of `dice_roll_dice`. |
 | 5 | A2A is replaced by subagents: the Rules and Character agents are `createAgent` instances with a `name` and a `description`, and the Game Master calls each through a tool built by `subagentTool()`. Ports 8000 and 8001 are gone. Structured output is `responseFormat`. The schema has a title (`.meta({ title: 'StoryOutput' })`), because LangChain otherwise renames the output tool on every request and the model can call a stale name. Conversation memory needs a checkpointer and a thread id. |
 | 7 | `createDeepAgent()` replaces `createHarness()`. Its built-in todo and file tools cannot be removed, so there is no "disable the built-in tools" step; files live in the agent's state, not on disk. The subagents are the Chapter 5 agents, called through the Deep Agents `task` tool. The `dnd-campaign` session is a thread id in a SQLite checkpointer at `.agent/sessions.sqlite`. Chapter 7 runs on Sonnet 4.6 like the other chapters, not Opus 5. If every `/inquire` fails after an error mid-turn, the saved session may be broken: stop the server and delete `.agent/`. |
+| 8 | New in this port, not in the Strands workshop. The Chapter 7 Game Master is deployed to Amazon Bedrock AgentCore Runtime with the AgentCore CLI, as bring-your-own TypeScript code in a container built by CodeBuild. The dice server and Chroma run in the same container, started by `8_agentcore/start.sh`. `8_agentcore/invoke_proxy.ts` serves the web UI's routes locally and signs the calls to `InvokeAgentRuntime`. |
 
 ## Branches
 
