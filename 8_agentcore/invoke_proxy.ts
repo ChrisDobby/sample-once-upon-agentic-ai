@@ -10,6 +10,7 @@ import { randomUUID } from 'node:crypto'
 import cors from 'cors'
 import express from 'express'
 // TODO: Step 5 - Import BedrockAgentCoreClient and InvokeAgentRuntimeCommand from @aws-sdk/client-bedrock-agentcore
+import { BedrockAgentCoreClient, InvokeAgentRuntimeCommand } from '@aws-sdk/client-bedrock-agentcore'
 
 const AGENT_RUNTIME_ARN = process.env.AGENT_RUNTIME_ARN
 if (!AGENT_RUNTIME_ARN) {
@@ -27,6 +28,14 @@ const runtimeSessionId = randomUUID()
 async function invoke(payload: Record<string, unknown>): Promise<unknown> {
   // TODO: Step 5 - Send an InvokeAgentRuntimeCommand with agentRuntimeArn, runtimeSessionId,
   //   payload: JSON.stringify(payload) and contentType: 'application/json'
+  const response = await client.send(
+    new InvokeAgentRuntimeCommand({
+      agentRuntimeArn: AGENT_RUNTIME_ARN,
+      runtimeSessionId,
+      payload: JSON.stringify(payload),
+      contentType: 'application/json',
+    }),
+  )
   return JSON.parse(await response.response!.transformToString())
 }
 

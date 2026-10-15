@@ -85,9 +85,13 @@ function findUser(userName: string) {
 }
 
 // TODO: Step 1 - Answer the health check: GET /ping returns { status: 'Healthy' }
+app.get('/ping', (req, res) => {
+  res.json({ status: 'Healthy' })
+})
 
 app.post('/invocations', async (req, res) => {
   // TODO: Step 2 - Use the AgentCore session id as the thread id: the X-Amzn-Bedrock-AgentCore-Runtime-Session-Id header
+  const sessionId = req.header('X-Amzn-Bedrock-AgentCore-Runtime-Session-Id') ?? 'local-session'
   const config = { configurable: { thread_id: sessionId } }
 
   // `agentcore invoke "..."` sends { prompt: "..." }: a plain question to the Game Master.
@@ -96,6 +100,10 @@ app.post('/invocations', async (req, res) => {
   try {
     // TODO: Step 3 - Dispatch on action: 'inquire' calls inquire(question, config), 'messages' calls messages(config),
     //   'user' calls findUser(userName); anything else is a 400
+    if (action === 'inquire') res.json(await inquire(question, config))
+    else if (action === 'messages') res.json(await messages(config))
+    else if (action === 'user') res.json(findUser(userName))
+    else res.status(400).json({ error: `Unknown action '${action}'` })
   } catch (error) {
     console.log(`Error occurred: ${error}`)
     res.status(500).json({ error: 'Internal server error' })
@@ -103,3 +111,4 @@ app.post('/invocations', async (req, res) => {
 })
 
 // TODO: Step 4 - Listen on 0.0.0.0, not localhost: AgentCore reaches the container from outside
+app.listen(PORT, '0.0.0.0', () => console.log(`D&D Game Master (AgentCore) listening on http://0.0.0.0:${PORT}`))
