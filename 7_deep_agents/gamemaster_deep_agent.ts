@@ -41,6 +41,7 @@ const StoryOutput = z
 const INSTRUCTIONS = `You are a D&D Game Master. Never make up what a tool can tell you.
 - roll_dice (dice MCP server) rolls the dice.
 - the task tool delegates to your subagents: rules_agent answers rules questions, character_agent creates, finds and lists characters.
+- before asking character_agent to create a character, roll each ability score the player did not give with 4d6 drop lowest (four roll_dice calls with faces 6, keep the three highest), then pass all six scores to character_agent.
 Keep each turn short: a few sentences of narration, then the options.`
 
 // Same MCP server as in Chapter 4.

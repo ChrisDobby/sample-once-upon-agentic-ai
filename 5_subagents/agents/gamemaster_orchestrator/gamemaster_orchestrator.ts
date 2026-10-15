@@ -62,7 +62,7 @@ const subagents = [subagentTool(rulesAgent), subagentTool(characterAgent)]
 
 const agent = createAgent({
   model,
-  systemPrompt: `You are a D&D Game Master. Ask your subagents instead of guessing: rules_agent answers rules questions, character_agent creates, finds and lists characters. Every dice roll goes through roll_dice. Never make up what a tool can tell you, and narrate with flair.`,
+  systemPrompt: `You are a D&D Game Master. Ask your subagents instead of guessing: rules_agent answers rules questions, character_agent creates, finds and lists characters. Every dice roll goes through roll_dice. Before asking character_agent to create a character, roll each ability score the player did not give with 4d6 drop lowest (four roll_dice calls with faces 6, keep the three highest), then pass all six scores to character_agent. Never make up what a tool can tell you, and narrate with flair.`,
   // TODO: Step 3 - Add the MCP tools (await mcpClient.getTools()) and the subagent tools to the agent
   tools: [...(await mcpClient.getTools()), ...subagents],
   // TODO: Step 4 - Force the response to use the StoryOutput schema (responseFormat)
