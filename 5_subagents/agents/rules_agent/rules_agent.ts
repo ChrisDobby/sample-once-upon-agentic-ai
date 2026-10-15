@@ -4,7 +4,8 @@ import { z } from 'zod'
 import { model } from '../../../shared/model.ts'
 
 // The knowledge base is served by a local Chroma server (npm run ch5:chroma), see 5_subagents/utils/create_knowledge_base.ts
-const CHROMA = { host: 'localhost', port: 8005 }
+// CHROMA_HOST is set by the Chapter 8 container; on your machine it stays localhost.
+const CHROMA = { host: process.env.CHROMA_HOST ?? 'localhost', port: 8005 }
 let collection: Collection | undefined
 
 /** Open the ChromaDB collection on first use (fails loudly if the knowledge base was not built). */

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.agentcore.aws.dev/v1/agentcore.json",
+  "name": "OnceUponAgenticAI",
+  "version": 1,
+  "managedBy": "CDK",
+  "tags": {
+    "agentcore:created-by": "agentcore-cli",
+    "agentcore:project-name": "OnceUponAgenticAI"
+  },
+  "runtimes": [
+    {
+      "name": "GameMaster",
+      "description": "The Chapter 7 D&D Game Master, with its dice MCP server and Chroma knowledge base",
+      "build": "Container",
+      "entrypoint": "gamemaster_agentcore.ts",
+      "codeLocation": "8_agentcore/",
+      "buildContextPath": ".",
+      "dockerfile": "8_agentcore/Dockerfile",
+      "runtimeVersion": "NODE_22",
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP"
+    }
+  ],
+  "memories": [],
+  "knowledgeBases": [],
+  "credentials": [],
+  "evaluators": [],
+  "onlineEvalConfigs": [],
+  "agentCoreGateways": [],
+  "policyEngines": [],
+  "configBundles": [],
+  "abTests": [],
+  "harnesses": [],
+  "datasets": [],
+  "capacityProviders": [],
+  "payments": []
+}

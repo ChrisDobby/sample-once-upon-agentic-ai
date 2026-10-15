@@ -138,7 +138,7 @@ Congratulations! You rebuilt your Game Master with Deep Agents and saw exactly w
 - ✅ Resuming a campaign across restarts with a SQLite checkpointer and a named thread
 - ✅ When to pick Deep Agents and when to stay on `createAgent`
 
-**Next Adventure**: Head to the [final cleanup](cleanup.md) page to stop your services and reflect on what you've built!
+**Next Adventure**: Take your Game Master to the cloud in [Chapter 8](8_agentcore.md), with Amazon Bedrock AgentCore!
 
 ---
 

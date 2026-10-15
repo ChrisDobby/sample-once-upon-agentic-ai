@@ -1,0 +1,16 @@
+# Secrets (local environment files are never committed)
+.env.local
+
+# Your AWS account and region: written by `agentcore deploy` from your credentials
+aws-targets.json
+
+# CDK Build Artifacts
+cdk/cdk.out/
+cdk/node_modules/
+cdk/dist/
+
+# CLI Internals, including the deployed state (it holds your account ID and resource ARNs)
+.cli/
+
+# Ephemeral Staging
+.cache/
