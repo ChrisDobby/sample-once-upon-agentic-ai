@@ -50,7 +50,7 @@ One import, one factory. Each option replaces something you wired by hand in Cha
 ## Step 2: Add the Dice MCP Tools
 
 ```typescript
-// TODO: Step 2 - Add the dice MCP tools (await mcpClient.getTools())
+// TODO: Step 2 - Add the dice MCP tools (await mcpClient.listTools())
 ```
 
 `tools`: your own tools, next to the built-ins. The `mcpClient` is the Chapter 4 client, already created in the file.
@@ -114,7 +114,7 @@ Where did the campaign go between the two runs? Look at the `.agent/` folder tha
 
 | | Chapter 5 (`createAgent`) | Chapter 7 (`createDeepAgent`) |
 |---|---|---|
-| Dice via MCP | `MultiServerMCPClient` + `getTools()` | same |
+| Dice via MCP | `MCPAdapter` + `listTools()` | same |
 | Subagents | `subagentTool()` wraps each agent as its own tool | `subagents: [{ name, description, runnable }]`, all behind one `task` tool |
 | System prompt | written by you, from scratch | Deep Agents' instructions + your `systemPrompt` |
 | Model | Claude Sonnet 4.6 on Bedrock | same |

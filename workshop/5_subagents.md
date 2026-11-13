@@ -156,7 +156,7 @@ The HTTP API around it is written for you, with [Express](https://expressjs.com/
 #### Step 1: Create the MCP Client for Dice Rolling
 
 ```typescript
-// TODO: Step 1 - Create a MultiServerMCPClient with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
+// TODO: Step 1 - Create an MCPAdapter with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
 //   and prefixToolNameWithServerName: false so the tool keeps its name, roll_dice
 ```
 
@@ -175,7 +175,7 @@ Each call starts a new conversation with the subagent: it remembers nothing betw
 #### Step 3: Add the Tools
 
 ```typescript
-// TODO: Step 3 - Add the MCP tools (await mcpClient.getTools()) and the subagent tools to the agent
+// TODO: Step 3 - Add the MCP tools (await mcpClient.listTools()) and the subagent tools to the agent
 ```
 
 The Game Master gets three tools: `roll_dice` from the dice server, `rules_agent` and `character_agent`. Pass them together in `tools`.

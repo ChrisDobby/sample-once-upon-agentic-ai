@@ -72,22 +72,24 @@ Leave this terminal open: the server has to stay up while the client talks to it
 ### Step 1: Create the MCP Client
 
 ```typescript
-// TODO: Step 1 - Import MultiServerMCPClient from @langchain/mcp-adapters
+// TODO: Step 1 - Import MCPAdapter from @langchain/mcp-adapters
 ```
 ```typescript
-// TODO: Step 1 - Create a MultiServerMCPClient with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
+// TODO: Step 1 - Create an MCPAdapter with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
 //   and prefixToolNameWithServerName: false so the tool keeps its name, roll_dice
 ```
 
-Create a `MultiServerMCPClient` named `mcpClient`, with an `mcpServers` map holding one server, `dice`. As its name says, the client can hold several servers; each entry is the server's URL and transport (`"http"` is streamable HTTP). Set `prefixToolNameWithServerName: false` too: the adapter would otherwise prefix each tool with its server's key, and the model would see `dice_roll_dice`. See [MCP](https://docs.langchain.com/oss/javascript/langchain/mcp) in the documentation.
+Create an `MCPAdapter` named `mcpClient`, with a `servers` map holding one server, `dice`. The adapter can hold several servers; each entry is the server's URL and transport (`"http"` is streamable HTTP). Set `prefixToolNameWithServerName: false` too: the adapter would otherwise prefix each tool with its server's key, and the model would see `dice_roll_dice`. See [MCP](https://docs.langchain.com/oss/javascript/langchain/mcp) in the documentation.
+
+Older examples use `MultiServerMCPClient`, `mcpServers` and `getTools()`. Version 2 of `@langchain/mcp-adapters` renamed them to `MCPAdapter`, `servers` and `listTools()`: the old names still work, but your editor flags them as deprecated.
 
 ### Step 2: Add MCP Tools to Your Agent
 
 ```typescript
-// TODO: Step 2 - Add the MCP tools (await mcpClient.getTools()) to the gamemaster agent
+// TODO: Step 2 - Add the MCP tools (await mcpClient.listTools()) to the gamemaster agent
 ```
 
-`await mcpClient.getTools()` connects to the server, lists its tools and returns them as ordinary LangChain tools: pass them as the agent's `tools`. Calling one of them sends the call to the server. The last line of the file, `await mcpClient.close()`, closes the connection so the script can exit.
+`await mcpClient.listTools()` connects to the server, lists its tools and returns them as ordinary LangChain tools: pass them as the agent's `tools`. Calling one of them sends the call to the server. The last line of the file, `await mcpClient.close()`, closes the connection so the script can exit.
 
 ### Step 3: Launch the Client
 
@@ -108,7 +110,7 @@ Congratulations! You've built an MCP server and client, and connected your agent
 **What you've learned:**
 - ✅ How to create an MCP server that exposes a tool (`McpServer`, `registerTool`)
 - ✅ How to serve it over streamable HTTP
-- ✅ How to connect an agent to it with `MultiServerMCPClient`
+- ✅ How to connect an agent to it with `MCPAdapter`
 
 **Next Adventure**: Head to [Chapter 5](5_subagents.md), where you'll orchestrate a team of specialized agents!
 
