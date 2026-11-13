@@ -3,7 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import { z } from 'zod'
 import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite'
-import { MultiServerMCPClient } from '@langchain/mcp-adapters'
+import { MCPAdapter } from '@langchain/mcp-adapters'
 import { toolStrategy } from 'langchain'
 import { model } from '../shared/model.ts'
 import { latestTurn, toMessageData } from '../shared/messages.ts'
@@ -44,8 +44,8 @@ const INSTRUCTIONS = `You are a D&D Game Master. Never make up what a tool can t
 Keep each turn short: a few sentences of narration, then the options.`
 
 // Same MCP server as in Chapter 4.
-const mcpClient = new MultiServerMCPClient({
-  mcpServers: { dice: { url: 'http://127.0.0.1:8002/mcp', transport: 'http' } },
+const mcpClient = new MCPAdapter({
+  servers: { dice: { url: 'http://127.0.0.1:8002/mcp', transport: 'http' } },
   prefixToolNameWithServerName: false,
 })
 
@@ -56,7 +56,7 @@ const checkpointer = SqliteSaver.fromConnString('.agent/sessions.sqlite')
 const agent = createDeepAgent({
   model,
   // TODO: Step 1 - Pass the INSTRUCTIONS as the systemPrompt
-  // TODO: Step 2 - Add the dice MCP tools (await mcpClient.getTools())
+  // TODO: Step 2 - Add the dice MCP tools (await mcpClient.listTools())
   // TODO: Step 3 - Add the Chapter 5 rulesAgent and characterAgent as subagents: { name, description, runnable } for each
   // TODO: Step 4 - Keep the session on disk: pass the checkpointer (the session name is the thread id, below)
   // TODO: Step 5 - Force the response to use the StoryOutput schema (responseFormat: toolStrategy(StoryOutput))

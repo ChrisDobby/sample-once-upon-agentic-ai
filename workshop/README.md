@@ -33,7 +33,7 @@ Your journey through the realms of AI agents is a progressive quest. **Each chap
 ### 🌐 [Chapter 4: Planar Portals - MCP Integration](4_mcp_integration.md)
 **Serve a tool over MCP and consume it**
 - Expose the same `roll_dice` with the MCP TypeScript SDK's `McpServer` over streamable HTTP
-- Connect an agent to it with `MultiServerMCPClient`
+- Connect an agent to it with `MCPAdapter`
 
 ### 🏰 [Chapter 5: The Grand Alliance - Subagents](5_subagents.md)
 **Make agents work together**

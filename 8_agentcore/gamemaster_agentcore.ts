@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync } from 'node:fs'
 import express from 'express'
 import { z } from 'zod'
 import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite'
-import { MultiServerMCPClient } from '@langchain/mcp-adapters'
+import { MCPAdapter } from '@langchain/mcp-adapters'
 import { createDeepAgent } from 'deepagents'
 import { toolStrategy } from 'langchain'
 import { model } from '../shared/model.ts'
@@ -43,8 +43,8 @@ const INSTRUCTIONS = `You are a D&D Game Master. Never make up what a tool can t
 Keep each turn short: a few sentences of narration, then the options.`
 
 // The dice server runs in the same container (see start.sh), so 127.0.0.1 still finds it.
-const mcpClient = new MultiServerMCPClient({
-  mcpServers: { dice: { url: 'http://127.0.0.1:8002/mcp', transport: 'http' } },
+const mcpClient = new MCPAdapter({
+  servers: { dice: { url: 'http://127.0.0.1:8002/mcp', transport: 'http' } },
   prefixToolNameWithServerName: false,
 })
 
@@ -55,7 +55,7 @@ const checkpointer = SqliteSaver.fromConnString('.agent/sessions.sqlite')
 const agent = createDeepAgent({
   model,
   systemPrompt: INSTRUCTIONS,
-  tools: await mcpClient.getTools(),
+  tools: await mcpClient.listTools(),
   subagents: [rulesAgent, characterAgent].map((subagent) => ({
     name: subagent.options.name!,
     description: subagent.options.description!,

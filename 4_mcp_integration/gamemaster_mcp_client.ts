@@ -1,9 +1,9 @@
 import { createAgent } from 'langchain'
 import { model } from '../shared/model.ts'
 import { runAndPrint } from '../shared/print.ts'
-// TODO: Step 1 - Import MultiServerMCPClient from @langchain/mcp-adapters
+// TODO: Step 1 - Import MCPAdapter from @langchain/mcp-adapters
 
-// TODO: Step 1 - Create a MultiServerMCPClient with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
+// TODO: Step 1 - Create an MCPAdapter with one server, dice: { url: "http://localhost:8002/mcp", transport: "http" },
 //   and prefixToolNameWithServerName: false so the tool keeps its name, roll_dice
 
 const gamemaster = createAgent({
@@ -11,7 +11,7 @@ const gamemaster = createAgent({
   systemPrompt: `You are Lady Luck, the mystical keeper of dice and fortune in D&D adventures.
     You speak with theatrical flair and always announce dice rolls with appropriate drama.
     You know all about D&D mechanics, always use the appropriate tools when applicable - never make up results!`,
-  // TODO: Step 2 - Add the MCP tools (await mcpClient.getTools()) to the gamemaster agent
+  // TODO: Step 2 - Add the MCP tools (await mcpClient.listTools()) to the gamemaster agent
 })
 
 await runAndPrint(gamemaster, {
